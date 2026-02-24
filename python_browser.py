@@ -1,51 +1,52 @@
 import sys
-from PyQt5.QtCore import QUrl
-from PyQt5.QtWidgets import QApplication, QMainWindow, QToolBar, QAction, QLineEdit
-from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt6.QtCore import QUrl
+from PyQt6.QtWidgets import QApplication, QMainWindow, QToolBar, QLineEdit
+from PyQt6.QtGui import QAction
+from PyQt6.QtWebEngineWidgets import QWebEngineView
 
 class SimpleBrowser(QMainWindow):
     def __init__(self):
         super().__init__()
         
-        # 1. Set up the core web engine view
+        # Set up the core web engine view
         self.browser = QWebEngineView()
         self.browser.setUrl(QUrl("https://www.google.com"))
         self.setCentralWidget(self.browser)
         self.showMaximized()
 
-        # 2. Create the navigation bar
+        # Create the navigation bar
         navbar = QToolBar()
         self.addToolBar(navbar)
 
-        # 3. Add a "Back" button
+        # Add a "Back" button
         back_btn = QAction('Back', self)
         back_btn.triggered.connect(self.browser.back)
         navbar.addAction(back_btn)
 
-        # 4. Add a "Forward" button
+        # Add a "Forward" button
         forward_btn = QAction('Forward', self)
         forward_btn.triggered.connect(self.browser.forward)
         navbar.addAction(forward_btn)
 
-        # --- NEW: Add a "Reload" button ---
+        # Add a "Reload" button
         reload_btn = QAction('Reload', self)
         reload_btn.triggered.connect(self.browser.reload)
         navbar.addAction(reload_btn)
 
-        # --- NEW: Add a "Home" button ---
+        # Add a "Home" button
         home_btn = QAction('Home', self)
         home_btn.triggered.connect(self.navigate_home)
         navbar.addAction(home_btn)
 
-        # 5. Add the URL address bar
+        # Add the URL address bar
         self.url_bar = QLineEdit()
         self.url_bar.returnPressed.connect(self.navigate_to_url)
         navbar.addWidget(self.url_bar)
 
-        # 6. Keep the URL bar updated if the user clicks a link on a page
+        # Keep the URL bar updated if the user clicks a link on a page
         self.browser.urlChanged.connect(self.update_url)
 
-    # NEW: Function to handle the Home button
+    # Function to handle the Home button
     def navigate_home(self):
         self.browser.setUrl(QUrl("https://www.google.com"))
 
@@ -68,4 +69,4 @@ if __name__ == "__main__":
     window = SimpleBrowser()
     
     # Start the event loop
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
